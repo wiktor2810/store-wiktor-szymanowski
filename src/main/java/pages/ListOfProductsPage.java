@@ -10,6 +10,7 @@ import java.util.Random;
 
 public class ListOfProductsPage extends WebElementManipulator{
 
+    static String correctName;
 
     public ListOfProductsPage(WebDriver driver){
         super(driver);
@@ -17,25 +18,17 @@ public class ListOfProductsPage extends WebElementManipulator{
         waitForElements();
     }
 
-    @FindBy(css = ".default_product_display")
+    @FindBy(css = "a.wpsc_product_title")
     private List<WebElement> listOfProducts;
 
     public void clickRandomProduct(){
         int size = listOfProducts.size();
         Random rand = new Random();
         int n = rand.nextInt(size) + 1;
+        correctName = listOfProducts.get(n-1).getText();
         click(listOfProducts.get(n-1));
     }
 
-    public void addProductRandomNumberOfTimes(int n){
-        clickRandomProduct();
-        //tu w wywolaniu tej metody podamy wywolanie metody losowania randomfrom1to3
-        ItemDetailsPage itemDetailsPage = new ItemDetailsPage(driver);
-        itemDetailsPage.checkCorrectnessOfChosenProduct();
-        for(int i = n; i > 0; i--){
-            itemDetailsPage.clickAddToBasket();
-        }
-    }
 
     public void waitForElements(){
         waitToBeVisible(listOfProducts);

@@ -7,11 +7,14 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import template.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BasketPage extends WebElementManipulator{
 
-    List<Product> listOfProductsFromBasket;
+    static List<Product> listOfProductInBasket = new ArrayList<Product>();
+    List<Product> listOfProductsSummary;
+
 
     public BasketPage(WebDriver driver){
         super(driver);
@@ -33,8 +36,8 @@ public class BasketPage extends WebElementManipulator{
             int quantity = Integer.parseInt(details.get(2).getText());
             int price = Integer.parseInt(details.get(3).getText());
             int totalPrice = Integer.parseInt(details.get(3).getText());
-            Product product = new Product(name, quantity, price, totalPrice);
-            listOfProductsFromBasket.add(product);
+            Product product = new Product(name, quantity, price);
+            listOfProductsSummary.add(product);
         }
     }
 

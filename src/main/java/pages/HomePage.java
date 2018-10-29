@@ -25,8 +25,8 @@ public class HomePage extends WebElementManipulator{
     @FindBy(css = "em[class='count']")
     private WebElement numberOfItems;
 
-    public void clickProductCategoryMenu(){
-        click(productCategoryButton);
+    public void moveMouseToProductCategoryMenu(){
+        move(productCategoryButton);
     }
 
     public void clickHomeButton(){

@@ -15,6 +15,12 @@ public class WebElementManipulator extends BasePage{
         element.click();
     }
 
+    public void move(WebElement element){
+        System.out.println("Moving mouse to: " + element.getText());
+        waitToBeVisible(element);
+        actions.moveToElement(element).perform();
+    }
+
     public void sendKeys(WebElement element, String text){
         System.out.println("Setting text: " + text + " to an element: " + element.getText());
         waitToBeVisible(element);

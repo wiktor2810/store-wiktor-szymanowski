@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import template.Product;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,22 +27,48 @@ public class ItemDetailsPage extends WebElementManipulator{
     @FindBy(css = "input[value='Add To Cart']")
     private WebElement addToBasket;
 
+    @FindBy(css = ".currentprice")
+    private WebElement currentPrice;
+
     public int getRandomNumberFrom1To3(){
         Random rand = new Random();
         int n = rand.nextInt(3) + 1;
         return n;
     }
 
-    public void clickAddToBasket(){
-        click(addToBasket);
+    public void clickAddToBasket(int n){
+        for(int i = n; i > 0; i--) {
+            addProductToBasket();
+            click(addToBasket);
+        }
     }
+
+
 
     public void checkCorrectnessOfChosenProduct(){
-        //asercja ale na junit i jak pobrac nazwe elementu z poprzedniej strony, chyba ta metoda musi przyjac stringa w parametrze
 
+        String chosenProduct = ListOfProductsPage.correctName;
+        String expectedProduct = prodTitle.getText();
+        System.out.println("chosenProduct : " + chosenProduct + " while expectedProduct : " + expectedProduct);
     }
 
 
+    public void addProductToBasket(){
+        String name = prodTitle.getText();
+        System.out.println("ItemDetailsPage: " + name);
+        System.out.println("ItemDetailsPage: " + currentPrice.getText());
+        String priceAfterSubstring = currentPrice.getText().substring(1);
+        System.out.println(priceAfterSubstring);
+        double price = Double.parseDouble(priceAfterSubstring);
+        for(Product product : BasketPage.listOfProductInBasket){
+            if(name.equals(product.getName())){
+                product.setQuantity(product.getQuantity() + 1);
+                product.setPrice(product.getTotalPrice() + price);
+            } else {
+                BasketPage.listOfProductInBasket.add(new Product(name, price));
+            }
+        }
+    }
 
     public void waitForElements(){
         listOfWebElements = new ArrayList<WebElement>();

@@ -1,8 +1,8 @@
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import pages.HomePage;
 
 public class Base {
@@ -10,7 +10,7 @@ public class Base {
     WebDriver driver;
     HomePage homePage;
 
-    @BeforeClass
+    @BeforeAll
     public void setUp(){
         System.setProperty("webdriver.chrome.driver", "src\\main\\resources\\chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
@@ -20,7 +20,8 @@ public class Base {
         homePage = new HomePage(driver);
     }
 
-    @AfterClass
+
+    @AfterAll
     public void cleanUp(){
         driver.quit();
     }
