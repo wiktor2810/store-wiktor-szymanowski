@@ -33,6 +33,7 @@ public class ItemDetailsPage extends WebElementManipulator{
     public int getRandomNumberFrom1To3(){
         Random rand = new Random();
         int n = rand.nextInt(3) + 1;
+        System.out.println("wylosowana liczba od 1 do 3 to: " + n);
         return n;
     }
 
@@ -40,6 +41,7 @@ public class ItemDetailsPage extends WebElementManipulator{
         for(int i = n; i > 0; i--) {
             addProductToBasket();
             click(addToBasket);
+            System.out.println("clickAddToBasket");
         }
     }
 
@@ -63,10 +65,26 @@ public class ItemDetailsPage extends WebElementManipulator{
         for(Product product : BasketPage.listOfProductInBasket){
             if(name.equals(product.getName())){
                 product.setQuantity(product.getQuantity() + 1);
-                product.setPrice(product.getTotalPrice() + price);
+                product.setTotalPrice(product.getTotalPrice() + price);
+                showDetailsAboutBasket();
             } else {
                 BasketPage.listOfProductInBasket.add(new Product(name, price));
+                showDetailsAboutBasket();
             }
+        }
+        if(BasketPage.listOfProductInBasket.size() == 0){
+            BasketPage.listOfProductInBasket.add(new Product(name, price));
+            showDetailsAboutBasket();
+        }
+
+    }
+
+    public void showDetailsAboutBasket(){
+        for(int j = 0; j < BasketPage.listOfProductInBasket.size(); j++) {
+            System.out.println("nazwa produktu w baskiecie: " + BasketPage.listOfProductInBasket.get(j).getName());
+            System.out.println("quantity tego produktu w baskecie: " + BasketPage.listOfProductInBasket.get(j).getQuantity());
+            System.out.println("price tego produktu w baskecie: " + BasketPage.listOfProductInBasket.get(j).getPrice());
+            System.out.println("Totalprice tego produktu w baskecie to: " + BasketPage.listOfProductInBasket.get(j).getTotalPrice());
         }
     }
 
