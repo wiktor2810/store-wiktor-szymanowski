@@ -1,5 +1,6 @@
 package pages;
 
+import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -59,9 +60,9 @@ public class ItemDetailsPage extends WebElementManipulator{
 
 
     public void checkCorrectnessOfChosenProduct(){
-
         String chosenProduct = ListOfProductsPage.correctName;
         String expectedProduct = prodTitle.getText();
+        Assertions.assertEquals(chosenProduct, expectedProduct);
         System.out.println("chosenProduct : " + chosenProduct + " while expectedProduct : " + expectedProduct);
     }
 

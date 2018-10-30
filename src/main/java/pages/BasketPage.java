@@ -27,7 +27,7 @@ public class BasketPage extends WebElementManipulator{
     @FindBy(css = ".product_row")
     private List<WebElement> rowsOfProducts;
 
-    @FindBy(css = ".yourtotal")
+    @FindBy(css = ".yourtotal .pricedisplay")
     private WebElement yourTotal;
 
 
@@ -42,6 +42,7 @@ public class BasketPage extends WebElementManipulator{
         }
         printingBasketSummary();
         validateBasket();
+        validateTotalSum();
 
     }
 
@@ -54,12 +55,12 @@ public class BasketPage extends WebElementManipulator{
     }
 
     public double getPrice(WebElement element){
-        String priceString = element.findElement(By.cssSelector(".wpsc_product_quantity + td")).getText().substring(1);
+        String priceString = element.findElement(By.cssSelector(".wpsc_product_quantity + td")).getText().substring(1).replaceAll("[,]", "");
         return Double.parseDouble(priceString);
     }
 
     public double getTotalPrice(WebElement element){
-        String priceString = element.findElement(By.cssSelector(".wpsc_product_price")).getText().substring(1);
+        String priceString = element.findElement(By.cssSelector(".wpsc_product_price")).getText().substring(1).replaceAll("[,]", "");
         return Double.parseDouble(priceString);
     }
 
@@ -84,7 +85,13 @@ public class BasketPage extends WebElementManipulator{
     }
 
     public void validateTotalSum(){
-        //asercja na yourtotal
+        BigDecimal totalSum = new BigDecimal(Double.parseDouble(yourTotal.getText().substring(1).replaceAll("[,]", "")));
+        double sumOfProductsInBasket = 0.0;
+        for(Product product : listOfProductsInBasket){
+            sumOfProductsInBasket += (product.getTotalPrice().doubleValue());
+        }
+        BigDecimal sumOfProductsInBasketBigDecimal = new BigDecimal(sumOfProductsInBasket);
+        Assertions.assertEquals(sumOfProductsInBasketBigDecimal, totalSum);
     }
 
     public void printingBasketSummary(){
