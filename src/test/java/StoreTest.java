@@ -31,7 +31,21 @@ public class StoreTest {
         ItemDetailsPage itemDetailsPage = new ItemDetailsPage(driver);
         itemDetailsPage.clickAddToBasket(itemDetailsPage.getRandomNumberFrom1To3());
         itemDetailsPage.checkCorrectnessOfChosenProduct();
-
+        itemDetailsPage.moveMouseToProductCategoryMenu();
+        productCategoryMenu.chooseRandomCategory();
+        listOfProductsPage.clickRandomProduct();
+        itemDetailsPage.clickAddToBasket(itemDetailsPage.getRandomNumberFrom1To3());
+        itemDetailsPage.checkCorrectnessOfChosenProduct();
+        itemDetailsPage.moveMouseToProductCategoryMenu();
+        productCategoryMenu.chooseRandomCategory();
+        listOfProductsPage.clickRandomProduct();
+        itemDetailsPage.clickAddToBasket(itemDetailsPage.getRandomNumberFrom1To3());
+        itemDetailsPage.checkCorrectnessOfChosenProduct();
+        itemDetailsPage.moveMouseToProductCategoryMenu();
+        productCategoryMenu.chooseRandomCategory();
+        listOfProductsPage.clickRandomProduct();
+        itemDetailsPage.clickAddToBasket(itemDetailsPage.getRandomNumberFrom1To3());
+        itemDetailsPage.checkCorrectnessOfChosenProduct();
 
     }
 }

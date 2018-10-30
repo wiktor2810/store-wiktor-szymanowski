@@ -43,7 +43,7 @@ public class ProductCategoryMenu extends WebElementManipulator{
     public void chooseRandomCategory(){
         listOfCategories = new WebElement[]{productCategory1, productCategory2, productCategory3, productCategory4, productCategory5, productCategory6 };
         Random rand = new Random();
-        int n = rand.nextInt(6) + 1;
+        int n = rand.nextInt(5) + 0;
         click(listOfCategories[n]);
     }
 
