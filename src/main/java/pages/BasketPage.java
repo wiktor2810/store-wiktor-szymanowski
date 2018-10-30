@@ -16,6 +16,7 @@ public class BasketPage extends WebElementManipulator{
 
     static List<Product> listOfProductsAddedToBasket = new ArrayList<Product>();
     List<Product> listOfProductsInBasket = new ArrayList<Product>();
+    static double sumOfProductsInBasket;
 
 
     public BasketPage(WebDriver driver){
@@ -29,6 +30,9 @@ public class BasketPage extends WebElementManipulator{
 
     @FindBy(css = ".yourtotal .pricedisplay")
     private WebElement yourTotal;
+
+    @FindBy(css = ".step2")
+    private WebElement continueButton;
 
 
     public void detailsOfRow(){
@@ -86,7 +90,7 @@ public class BasketPage extends WebElementManipulator{
 
     public void validateTotalSum(){
         BigDecimal totalSum = new BigDecimal(Double.parseDouble(yourTotal.getText().substring(1).replaceAll("[,]", "")));
-        double sumOfProductsInBasket = 0.0;
+        sumOfProductsInBasket = 0.0;
         for(Product product : listOfProductsInBasket){
             sumOfProductsInBasket += (product.getTotalPrice().doubleValue());
         }
@@ -103,6 +107,9 @@ public class BasketPage extends WebElementManipulator{
         }
     }
 
+    public void clickContinueButton(){
+        click(continueButton);
+    }
 
     public void waitForElements(){
         waitToBeVisible(rowsOfProducts);

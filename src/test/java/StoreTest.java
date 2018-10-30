@@ -46,6 +46,14 @@ public class StoreTest {
         itemDetailsPage.clickBasket();
         BasketPage basketPage = new BasketPage(driver);
         basketPage.detailsOfRow();
+        basketPage.clickContinueButton();
+        FormPage formPage = new FormPage(driver);
+        formPage.checkShippingSameBillingCheckbox();
+        formPage.createRandomUser();
+        formPage.fillTheForm();
+        formPage.clickPurchase();
+        formPage.itemCostValidation();
+        formPage.totalPriceValidation();
 
     }
 
