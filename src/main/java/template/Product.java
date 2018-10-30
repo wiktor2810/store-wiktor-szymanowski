@@ -6,6 +6,14 @@ public class Product {
     double price;
     double totalPrice;
 
+    public Product(String name, int quantity, double price, double totalPrice){
+        this.name = name;
+        this.quantity = quantity;
+        this.price = price;
+        this.totalPrice = totalPrice;
+
+    }
+
     public Product(String name, int quantity, double price){
         this.name = name;
         this.quantity = quantity;

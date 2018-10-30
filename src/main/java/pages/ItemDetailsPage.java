@@ -34,6 +34,9 @@ public class ItemDetailsPage extends WebElementManipulator{
     @FindBy(id = "menu-item-33")
     private WebElement productCategoryButton;
 
+    @FindBy(xpath = "//span[.='Cart']")
+    private WebElement basket;
+
 
     public int getRandomNumberFrom1To3(){
         Random rand = new Random();
@@ -107,6 +110,10 @@ public class ItemDetailsPage extends WebElementManipulator{
 
     public void moveMouseToProductCategoryMenu(){
         move(productCategoryButton);
+    }
+
+    public void clickBasket(){
+        click(basket);
     }
 
     public void waitForElements(){
