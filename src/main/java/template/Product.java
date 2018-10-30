@@ -1,12 +1,14 @@
 package template;
 
+import java.math.BigDecimal;
+
 public class Product {
     String name;
     int quantity;
-    double price;
-    double totalPrice;
+    BigDecimal price;
+    BigDecimal totalPrice;
 
-    public Product(String name, int quantity, double price, double totalPrice){
+    public Product(String name, int quantity, BigDecimal price, BigDecimal totalPrice){
         this.name = name;
         this.quantity = quantity;
         this.price = price;
@@ -14,14 +16,14 @@ public class Product {
 
     }
 
-    public Product(String name, int quantity, double price){
+    public Product(String name, int quantity, BigDecimal price){
         this.name = name;
         this.quantity = quantity;
         this.price = price;
-        this.totalPrice = quantity * price;
+        this.totalPrice = price.multiply(new BigDecimal(quantity));
     }
 
-    public Product(String name, double price){
+    public Product(String name, BigDecimal price){
         this(name, 1, price);
     }
 
@@ -41,19 +43,19 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-    public double getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(double totalPrice) {
+    public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 }

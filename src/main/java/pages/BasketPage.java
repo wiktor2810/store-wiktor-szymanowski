@@ -1,5 +1,6 @@
 package pages;
 
+import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -7,13 +8,14 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import template.Product;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BasketPage extends WebElementManipulator{
 
-    static List<Product> listOfProductInBasket = new ArrayList<Product>();
-    List<Product> listOfProductsSummary = new ArrayList<Product>();
+    static List<Product> listOfProductsAddedToBasket = new ArrayList<Product>();
+    List<Product> listOfProductsInBasket = new ArrayList<Product>();
 
 
     public BasketPage(WebDriver driver){
@@ -33,17 +35,14 @@ public class BasketPage extends WebElementManipulator{
         for(int i = 0; i < rowsOfProducts.size(); i++){
             String name = getName(rowsOfProducts.get(i));
             int quantity = getQuantity(rowsOfProducts.get(i));
-            double price = getPrice(rowsOfProducts.get(i));
-            double totalPrice = getTotalPrice(rowsOfProducts.get(i));
-//            List<WebElement> details = rowsOfProducts.get(i).findElements(By.tagName("td"));
-//            String name = details.get(1).getText();
-//            int quantity = Integer.parseInt(details.get(2).getAttribute("value"));
-//            int price = Integer.parseInt(details.get(3).getText());
-//            int totalPrice = Integer.parseInt(details.get(4).getText());
+            BigDecimal price = BigDecimal.valueOf(getPrice(rowsOfProducts.get(i)));
+            BigDecimal totalPrice = BigDecimal.valueOf(getTotalPrice(rowsOfProducts.get(i)));
             Product product = new Product(name, quantity, price, totalPrice);
-            listOfProductsSummary.add(product);
+            listOfProductsInBasket.add(product);
         }
         printingBasketSummary();
+        validateBasket();
+
     }
 
     public String getName(WebElement element){
@@ -64,15 +63,32 @@ public class BasketPage extends WebElementManipulator{
         return Double.parseDouble(priceString);
     }
 
-    public void ValidateBasket(){
-
+    public void validateBasket(){
+        for(Product product : listOfProductsInBasket){
+            String name = product.getName();
+            for(Product product1 : listOfProductsAddedToBasket){
+                String name1 = product1.getName();
+                if(name.equals(name1)){
+                    int quantity = product.getQuantity();
+                    int quantity1 = product1.getQuantity();
+                    BigDecimal price = product.getPrice();
+                    BigDecimal price1 = product1.getPrice();
+                    BigDecimal totalPrice = product.getPrice();
+                    BigDecimal totalPrice1 = product1.getPrice();
+                    Assertions.assertEquals(quantity, quantity1);
+                    Assertions.assertEquals(price, price1);
+                    Assertions.assertEquals(totalPrice, totalPrice1);
+                }
+            }
+        }
     }
+
     public void validateTotalSum(){
         //asercja na yourtotal
     }
 
     public void printingBasketSummary(){
-        for(Product product : listOfProductsSummary){
+        for(Product product : listOfProductsInBasket){
             System.out.println(product.getName());
             System.out.println(product.getQuantity());
             System.out.println(product.getPrice());

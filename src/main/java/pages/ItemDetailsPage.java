@@ -6,6 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import template.Product;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -69,30 +70,31 @@ public class ItemDetailsPage extends WebElementManipulator{
         String name = prodTitle.getText();
         String priceAfterSubstring = currentPrice.getText().substring(1);
         System.out.println(priceAfterSubstring);
-        double price = Double.parseDouble(priceAfterSubstring);
+        BigDecimal price = BigDecimal.valueOf(Double.parseDouble(priceAfterSubstring));
 
         boolean isItNewProductInBasket = false;
 
-        if(BasketPage.listOfProductInBasket.size() == 0){
-            BasketPage.listOfProductInBasket.add(new Product(name, price));
+        if(BasketPage.listOfProductsAddedToBasket.size() == 0){
+            BasketPage.listOfProductsAddedToBasket.add(new Product(name, price));
             System.out.println("000new product");
             showDetailsAboutBasket();
             return;
         }
 
-        for(Product product : BasketPage.listOfProductInBasket){
+        for(Product product : BasketPage.listOfProductsAddedToBasket){
             if(name.equals(product.getName())){
                 System.out.println("111name of chosen product is equal to that in basket");
                 product.setQuantity(product.getQuantity() + 1);
-                product.setTotalPrice(product.getTotalPrice() + price);
+                product.setTotalPrice(product.getTotalPrice().add(price));
                 isItNewProductInBasket = false;
+                break;
             } else {
                 isItNewProductInBasket = true;
             }
         }
 
         if(isItNewProductInBasket){
-            BasketPage.listOfProductInBasket.add(new Product(name, price));
+            BasketPage.listOfProductsAddedToBasket.add(new Product(name, price));
             System.out.println("222new product cuz name is different to that in a list");
         }
 
@@ -100,11 +102,11 @@ public class ItemDetailsPage extends WebElementManipulator{
     }
 
     public void showDetailsAboutBasket(){
-        for(int j = 0; j < BasketPage.listOfProductInBasket.size(); j++) {
-            System.out.println("nazwa produktu w baskiecie: " + BasketPage.listOfProductInBasket.get(j).getName());
-            System.out.println("quantity tego produktu w baskecie: " + BasketPage.listOfProductInBasket.get(j).getQuantity());
-            System.out.println("price tego produktu w baskecie: " + BasketPage.listOfProductInBasket.get(j).getPrice());
-            System.out.println("Totalprice tego produktu w baskecie to: " + BasketPage.listOfProductInBasket.get(j).getTotalPrice());
+        for(int j = 0; j < BasketPage.listOfProductsAddedToBasket.size(); j++) {
+            System.out.println("nazwa produktu w baskiecie: " + BasketPage.listOfProductsAddedToBasket.get(j).getName());
+            System.out.println("quantity tego produktu w baskecie: " + BasketPage.listOfProductsAddedToBasket.get(j).getQuantity());
+            System.out.println("price tego produktu w baskecie: " + BasketPage.listOfProductsAddedToBasket.get(j).getPrice());
+            System.out.println("Totalprice tego produktu w baskecie to: " + BasketPage.listOfProductsAddedToBasket.get(j).getTotalPrice());
         }
     }
 
