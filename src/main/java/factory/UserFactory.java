@@ -12,8 +12,9 @@ public class UserFactory {
         String city =randomStringOfLenght5();
         String stateProvince = randomStringOfLenght5();
         int phone = Integer.parseInt(randomIntOfLenght9());
+        String email = randomStringOfLenght5() + "@wp.pl";
 
-        return new User(firstName, lastName, address, city, stateProvince, phone);
+        return new User(firstName, lastName, address, city, stateProvince, phone, email);
     }
 
     public String randomStringOfLenght5(){

@@ -59,7 +59,11 @@ public class FormPage extends WebElementManipulator{
     @FindBy(css = "#checkout_total .pricedisplay")
     private WebElement totalPrice;
 
+    @FindBy(css = "input[title='billingemail']")
+    private WebElement email;
+
     public void fillTheForm(){
+        sendKeys(email, user.getEmail());
         sendKeys(firstName, user.getFirstName());
         sendKeys(lastName, user.getLastName());
         sendKeys(address, user.getAddress());
@@ -84,8 +88,8 @@ public class FormPage extends WebElementManipulator{
     }
 
     public void itemCostValidation(){
-        BigDecimal itemCostBigDecimal = new BigDecimal(Double.parseDouble(itemCost.getText().substring(1).replaceAll("[,]", "")));
-        Assertions.assertEquals(itemCostBigDecimal, BigDecimal.valueOf(BasketPage.sumOfProductsInBasket));
+        double itemCostDouble = Double.parseDouble(itemCost.getText().substring(1).replaceAll("[,]", ""));
+        Assertions.assertEquals(BigDecimal.valueOf(itemCostDouble), BigDecimal.valueOf(BasketPage.sumOfProductsInBasket));
     }
 
     public void totalPriceValidation(){

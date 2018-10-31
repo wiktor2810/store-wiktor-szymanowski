@@ -7,14 +7,24 @@ public class User {
     String city;
     String stateProvince;
     int phone;
+    String email;
 
-    public User(String firstName, String lastName, String address, String city, String stateProvince, int phone) {
+    public User(String firstName, String lastName, String address, String city, String stateProvince, int phone, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.city = city;
         this.stateProvince = stateProvince;
         this.phone = phone;
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getFirstName() {

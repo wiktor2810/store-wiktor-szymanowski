@@ -51,10 +51,9 @@ public class StoreTest {
         formPage.checkShippingSameBillingCheckbox();
         formPage.createRandomUser();
         formPage.fillTheForm();
-        formPage.clickPurchase();
         formPage.itemCostValidation();
         formPage.totalPriceValidation();
-
+        formPage.clickPurchase();
     }
 
 
@@ -78,6 +77,18 @@ public class StoreTest {
         itemDetailsPage.clickBasket();
         BasketPage basketPage = new BasketPage(driver);
         basketPage.detailsOfRow();
-
+        basketPage.clickContinueButton();
+        FormPage formPage = new FormPage(driver);
+        formPage.checkShippingSameBillingCheckbox();
+        formPage.createRandomUser();
+        formPage.fillTheForm();
+        formPage.itemCostValidation();
+        formPage.totalPriceValidation();
+        formPage.clickPurchase();
+        FinalPage finalPage = new FinalPage(driver);
+        finalPage.detailsOfRow();
+        finalPage.validateBasket();
+        finalPage.validateTotalSum();
+        finalPage.validateShipping();
     }
 }
