@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 public class FormPage extends WebElementManipulator{
 
     User user;
+    static BigDecimal shippingCostBigDecimal;
 
     public FormPage(WebDriver driver){
         super(driver);
@@ -94,7 +95,7 @@ public class FormPage extends WebElementManipulator{
 
     public void totalPriceValidation(){
         BigDecimal itemCostBigDecimal = new BigDecimal(Double.parseDouble(itemCost.getText().substring(1).replaceAll("[,]", "")));
-        BigDecimal shippingCostBigDecimal = new BigDecimal(Double.parseDouble(totalShipping.getText().substring(1).replaceAll("[,]", "")));
+        shippingCostBigDecimal = new BigDecimal(Double.parseDouble(totalShipping.getText().substring(1).replaceAll("[,]", "")));
         BigDecimal sumOfShippingAndItemCost = itemCostBigDecimal.add(shippingCostBigDecimal);
         BigDecimal expectedTotal = new BigDecimal(Double.parseDouble(totalPrice.getText().substring(1).replaceAll("[,]", "")));
         Assertions.assertEquals(sumOfShippingAndItemCost, expectedTotal);

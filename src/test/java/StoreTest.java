@@ -54,6 +54,8 @@ public class StoreTest {
         formPage.itemCostValidation();
         formPage.totalPriceValidation();
         formPage.clickPurchase();
+        FinalPage finalPage = new FinalPage(driver);
+        finalPage.detailsOfRow();
     }
 
 
@@ -87,8 +89,6 @@ public class StoreTest {
         formPage.clickPurchase();
         FinalPage finalPage = new FinalPage(driver);
         finalPage.detailsOfRow();
-        finalPage.validateBasket();
-        finalPage.validateTotalSum();
-        finalPage.validateShipping();
+
     }
 }

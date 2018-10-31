@@ -16,6 +16,7 @@ public class FinalPage extends WebElementManipulator{
 
     List<Product> listOfProductsInFinalStep = new ArrayList<Product>();
     double sumOfProductsInFinalStep;
+    BigDecimal shippingBigDecimal;
 
     public FinalPage(WebDriver driver){
         super(driver);
@@ -26,11 +27,7 @@ public class FinalPage extends WebElementManipulator{
     private List<WebElement> rowsOfProducts;
 
     @FindBy(css = "table + p")
-    private WebElement totalShipping;
-
-    @FindBy(css = "table + p > br")
-    private WebElement total;
-
+    private WebElement totalAndShipping;
 
     public void detailsOfRow(){
         for(int i = 0; i < rowsOfProducts.size(); i++){
@@ -43,8 +40,8 @@ public class FinalPage extends WebElementManipulator{
         }
         printingBasketSummary();
         validateBasket();
+        validateShipping();
         validateTotalSum();
-
     }
 
 
@@ -87,14 +84,14 @@ public class FinalPage extends WebElementManipulator{
     }
 
     public void validateTotalSum(){
-        System.out.println(total.getText());
-        BigDecimal totalSum = new BigDecimal(Double.parseDouble(total.getText().replaceAll("[$,]", "")));
+        String totalSum = totalAndShipping.getText().substring(totalAndShipping.getText().lastIndexOf("$")+1);
+        BigDecimal totalSumBigDecimal = new BigDecimal(Double.parseDouble(totalSum));
         sumOfProductsInFinalStep = 0.0;
         for(Product product : listOfProductsInFinalStep){
             sumOfProductsInFinalStep += (product.getTotalPrice().doubleValue());
         }
-        BigDecimal sumOfProductsInBasketBigDecimal = new BigDecimal(sumOfProductsInFinalStep);
-        Assertions.assertEquals(sumOfProductsInBasketBigDecimal, totalSum);
+        BigDecimal sumOfProductsInBasketBigDecimal = new BigDecimal(sumOfProductsInFinalStep).add(shippingBigDecimal);
+        Assertions.assertEquals(sumOfProductsInBasketBigDecimal, totalSumBigDecimal);
     }
 
     public void printingBasketSummary(){
@@ -107,9 +104,11 @@ public class FinalPage extends WebElementManipulator{
     }
 
     public void validateShipping(){
-        System.out.println(totalShipping.getText());
-        BigDecimal shipping = new BigDecimal(Double.parseDouble(totalShipping.getText().replaceAll("[Total Shipping:,]", "")));
-
+//        System.out.println(totalShipping.getText());
+//        BigDecimal shipping = new BigDecimal(Double.parseDouble(totalShipping.getText().replaceAll("[Total Shipping:,]", "")));
+        String shipping = totalAndShipping.getText().substring(totalAndShipping.getText().indexOf("$")+1, totalAndShipping.getText().indexOf("\n"));
+        shippingBigDecimal = new BigDecimal(Double.parseDouble(shipping));
+        Assertions.assertEquals(shippingBigDecimal, FormPage.shippingCostBigDecimal);
     }
 
 }
