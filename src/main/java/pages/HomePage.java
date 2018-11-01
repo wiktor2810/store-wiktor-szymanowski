@@ -9,7 +9,6 @@ public class HomePage extends WebElementManipulator{
 
     public HomePage(WebDriver driver){
         super(driver);
-        driver.get("http://store.demoqa.com/");
         PageFactory.initElements(driver, this);
     }
 
@@ -29,16 +28,4 @@ public class HomePage extends WebElementManipulator{
         move(productCategoryButton);
     }
 
-    public void clickHomeButton(){
-        click(homeButton);
-    }
-
-    public void clickBasket(){
-        click(basket);
-    }
-
-    public void checkNumberOfItems(int expectedNumberOfItems){
-        int realNumberOfItems = Integer.parseInt(numberOfItems.getText());
-        //asercja junita
-    }
 }

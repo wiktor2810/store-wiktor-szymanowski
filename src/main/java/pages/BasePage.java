@@ -33,5 +33,10 @@ public class BasePage {
         wait.until(ExpectedConditions.visibilityOfAllElements(element));
     }
 
+    public void waitUntilText(WebElement element, String text) {
+        WebDriverWait wait = new WebDriverWait(driver, 20);
+        wait.until(ExpectedConditions.textToBePresentInElement(element, text));
+    }
+
 
 }

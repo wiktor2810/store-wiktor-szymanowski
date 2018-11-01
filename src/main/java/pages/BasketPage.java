@@ -22,7 +22,6 @@ public class BasketPage extends WebElementManipulator{
     public BasketPage(WebDriver driver){
         super(driver);
         PageFactory.initElements(driver, this);
-        waitForElements();
     }
 
     @FindBy(css = ".product_row")
@@ -35,7 +34,7 @@ public class BasketPage extends WebElementManipulator{
     private WebElement continueButton;
 
 
-    public void detailsOfRow(){
+    public BasketPage detailsOfRow(){
         for(int i = 0; i < rowsOfProducts.size(); i++){
             String name = getName(rowsOfProducts.get(i));
             int quantity = getQuantity(rowsOfProducts.get(i));
@@ -48,6 +47,7 @@ public class BasketPage extends WebElementManipulator{
         validateBasket();
         validateTotalSum();
 
+        return this;
     }
 
     public String getName(WebElement element){
@@ -107,12 +107,9 @@ public class BasketPage extends WebElementManipulator{
         }
     }
 
-    public void clickContinueButton(){
+    public BasketPage clickContinueButton(){
         click(continueButton);
-    }
-
-    public void waitForElements(){
-        waitToBeVisible(rowsOfProducts);
+        return this;
     }
 
 

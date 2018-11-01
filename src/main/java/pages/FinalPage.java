@@ -29,7 +29,8 @@ public class FinalPage extends WebElementManipulator{
     @FindBy(css = "table + p")
     private WebElement totalAndShipping;
 
-    public void detailsOfRow(){
+    public FinalPage detailsOfRow(){
+        waitToBeVisible(totalAndShipping);
         for(int i = 0; i < rowsOfProducts.size(); i++){
             String name = getName(rowsOfProducts.get(i));
             int quantity = getQuantity(rowsOfProducts.get(i));
@@ -42,6 +43,7 @@ public class FinalPage extends WebElementManipulator{
         validateBasket();
         validateShipping();
         validateTotalSum();
+        return this;
     }
 
 
@@ -84,7 +86,7 @@ public class FinalPage extends WebElementManipulator{
     }
 
     public void validateTotalSum(){
-        String totalSum = totalAndShipping.getText().substring(totalAndShipping.getText().lastIndexOf("$")+1);
+        String totalSum = totalAndShipping.getText().substring(totalAndShipping.getText().lastIndexOf("$")+1).replace("," , "");
         BigDecimal totalSumBigDecimal = new BigDecimal(Double.parseDouble(totalSum));
         sumOfProductsInFinalStep = 0.0;
         for(Product product : listOfProductsInFinalStep){
@@ -104,8 +106,6 @@ public class FinalPage extends WebElementManipulator{
     }
 
     public void validateShipping(){
-//        System.out.println(totalShipping.getText());
-//        BigDecimal shipping = new BigDecimal(Double.parseDouble(totalShipping.getText().replaceAll("[Total Shipping:,]", "")));
         String shipping = totalAndShipping.getText().substring(totalAndShipping.getText().indexOf("$")+1, totalAndShipping.getText().indexOf("\n"));
         shippingBigDecimal = new BigDecimal(Double.parseDouble(shipping));
         Assertions.assertEquals(shippingBigDecimal, FormPage.shippingCostBigDecimal);

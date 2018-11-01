@@ -15,7 +15,6 @@ public class ListOfProductsPage extends WebElementManipulator{
     public ListOfProductsPage(WebDriver driver){
         super(driver);
         PageFactory.initElements(driver, this);
-        waitForElements();
     }
 
     @FindBy(css = "a.wpsc_product_title")
@@ -29,8 +28,4 @@ public class ListOfProductsPage extends WebElementManipulator{
         click(listOfProducts.get(n-1));
     }
 
-
-    public void waitForElements(){
-        waitToBeVisible(listOfProducts);
-    }
 }

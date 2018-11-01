@@ -8,21 +8,16 @@ import org.openqa.selenium.support.PageFactory;
 import template.Product;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class ItemDetailsPage extends WebElementManipulator{
 
-    List<WebElement> listOfWebElements;
     int randomNumberFrom1to3;
 
     public ItemDetailsPage(WebDriver driver){
         super(driver);
         PageFactory.initElements(driver, this);
-        waitForElements();
     }
-
 
     @FindBy(css = ".prodtitle")
     private WebElement prodTitle;
@@ -39,6 +34,9 @@ public class ItemDetailsPage extends WebElementManipulator{
     @FindBy(xpath = "//span[.='Cart']")
     private WebElement basket;
 
+    @FindBy(css = ".count")
+    private WebElement basketCount;
+
 
     public int getRandomNumberFrom1To3(){
         Random rand = new Random();
@@ -48,26 +46,26 @@ public class ItemDetailsPage extends WebElementManipulator{
         return n;
     }
 
-    public void clickAddToBasket(int n){
+    public ItemDetailsPage clickAddToBasket(int n){
         for(int i = n; i > 0; i--) {
             addProductToBasket();
             click(addToBasket);
+            waitForChangeInBasket(getAmountOfProducts());
             waitToBeClickable(addToBasket);
             System.out.println("clickAddToBasket");
         }
+        return this;
     }
 
-
-
-    public void checkCorrectnessOfChosenProduct(){
+    public ItemDetailsPage checkCorrectnessOfChosenProduct(){
         String chosenProduct = ListOfProductsPage.correctName;
         String expectedProduct = prodTitle.getText();
         Assertions.assertEquals(chosenProduct, expectedProduct);
         System.out.println("chosenProduct : " + chosenProduct + " while expectedProduct : " + expectedProduct);
+        return this;
     }
 
-
-    public void addProductToBasket(){
+    public ItemDetailsPage addProductToBasket(){
         String name = prodTitle.getText();
         String priceAfterSubstring = currentPrice.getText().substring(1);
         System.out.println(priceAfterSubstring);
@@ -79,7 +77,7 @@ public class ItemDetailsPage extends WebElementManipulator{
             BasketPage.listOfProductsAddedToBasket.add(new Product(name, price));
             System.out.println("000new product");
             showDetailsAboutBasket();
-            return;
+            return this;
         }
 
         for(Product product : BasketPage.listOfProductsAddedToBasket){
@@ -100,32 +98,40 @@ public class ItemDetailsPage extends WebElementManipulator{
         }
 
         showDetailsAboutBasket();
+        return this;
     }
 
-    public void showDetailsAboutBasket(){
+    public ItemDetailsPage showDetailsAboutBasket(){
         for(int j = 0; j < BasketPage.listOfProductsAddedToBasket.size(); j++) {
             System.out.println("nazwa produktu w baskiecie: " + BasketPage.listOfProductsAddedToBasket.get(j).getName());
             System.out.println("quantity tego produktu w baskecie: " + BasketPage.listOfProductsAddedToBasket.get(j).getQuantity());
             System.out.println("price tego produktu w baskecie: " + BasketPage.listOfProductsAddedToBasket.get(j).getPrice());
             System.out.println("Totalprice tego produktu w baskecie to: " + BasketPage.listOfProductsAddedToBasket.get(j).getTotalPrice());
         }
+        return this;
     }
 
-    public void moveMouseToProductCategoryMenu(){
+    public ItemDetailsPage moveMouseToProductCategoryMenu(){
         move(productCategoryButton);
+        return this;
     }
 
-    public void clickBasket(){
+    public ItemDetailsPage clickBasket(){
         click(basket);
+        return this;
     }
 
-    public void waitForElements(){
-        listOfWebElements = new ArrayList<WebElement>();
-        listOfWebElements.add(prodTitle);
-        listOfWebElements.add(addToBasket);
-        waitToBeVisible(listOfWebElements);
+    public int getAmountOfProducts(){
+        int amountOfProducts = 0;
+        for (Product product : BasketPage.listOfProductsAddedToBasket) {
+            amountOfProducts+=product.getQuantity();
+        }
+        return amountOfProducts;
     }
 
+    public void waitForChangeInBasket(int amount) {
+        waitUntilText(basketCount, String.valueOf(amount));
+    }
 
 
 }

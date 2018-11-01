@@ -1,93 +1,70 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import pages.*;
 
-public class StoreTest {
+public class StoreTest extends Base{
 
-    WebDriver driver;
     HomePage homePage;
+    ProductCategoryMenu productCategoryMenu;
+    ListOfProductsPage listOfProductsPage;
+    ItemDetailsPage itemDetailsPage;
+    BasketPage basketPage;
+    FormPage formPage;
+    FinalPage finalPage;
+
+    @BeforeEach
+    public void beforeStore(){
+        homePage = new HomePage(driver);
+        productCategoryMenu = new ProductCategoryMenu(driver);
+        listOfProductsPage = new ListOfProductsPage(driver);
+        itemDetailsPage = new ItemDetailsPage(driver);
+        basketPage = new BasketPage(driver);
+        formPage = new FormPage(driver);
+        finalPage = new FinalPage(driver);
+    }
 
     @Test
     public void storeTest(){
 
-        System.setProperty("webdriver.chrome.driver", "src\\main\\resources\\chromedriver.exe");
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("start-maximized");
-        options.addArguments("disable-extensions");
-        driver = new ChromeDriver(options);
-        homePage = new HomePage(driver);
         homePage.moveMouseToProductCategoryMenu();
 
-
-        ProductCategoryMenu productCategoryMenu = new ProductCategoryMenu(driver);
-        productCategoryMenu.chooseRandomCategory();
-        ListOfProductsPage listOfProductsPage = new ListOfProductsPage(driver);
-        listOfProductsPage.clickRandomProduct();
-        ItemDetailsPage itemDetailsPage = new ItemDetailsPage(driver);
-        itemDetailsPage.clickAddToBasket(itemDetailsPage.getRandomNumberFrom1To3());
-        itemDetailsPage.checkCorrectnessOfChosenProduct();
-        itemDetailsPage.moveMouseToProductCategoryMenu();
-        productCategoryMenu.chooseRandomCategory();
-        listOfProductsPage.clickRandomProduct();
-        itemDetailsPage.clickAddToBasket(itemDetailsPage.getRandomNumberFrom1To3());
-        itemDetailsPage.checkCorrectnessOfChosenProduct();
-        itemDetailsPage.moveMouseToProductCategoryMenu();
-        productCategoryMenu.chooseRandomCategory();
-        listOfProductsPage.clickRandomProduct();
-        itemDetailsPage.clickAddToBasket(itemDetailsPage.getRandomNumberFrom1To3());
-        itemDetailsPage.checkCorrectnessOfChosenProduct();
-        itemDetailsPage.moveMouseToProductCategoryMenu();
-        productCategoryMenu.chooseRandomCategory();
-        listOfProductsPage.clickRandomProduct();
-        itemDetailsPage.clickAddToBasket(itemDetailsPage.getRandomNumberFrom1To3());
-        itemDetailsPage.checkCorrectnessOfChosenProduct();
+        for(int i = 0; i < 4; i++) {
+            productCategoryMenu.chooseRandomCategory();
+            listOfProductsPage.clickRandomProduct();
+            itemDetailsPage.clickAddToBasket(itemDetailsPage.getRandomNumberFrom1To3())
+                    .checkCorrectnessOfChosenProduct()
+                    .moveMouseToProductCategoryMenu();
+        }
         itemDetailsPage.clickBasket();
-        BasketPage basketPage = new BasketPage(driver);
-        basketPage.detailsOfRow();
-        basketPage.clickContinueButton();
-        FormPage formPage = new FormPage(driver);
-        formPage.checkShippingSameBillingCheckbox();
-        formPage.createRandomUser();
-        formPage.fillTheForm();
-        formPage.itemCostValidation();
-        formPage.totalPriceValidation();
-        formPage.clickPurchase();
-        FinalPage finalPage = new FinalPage(driver);
+        basketPage.detailsOfRow()
+                .clickContinueButton();
+        formPage.checkShippingSameBillingCheckbox()
+                .createRandomUser()
+                .fillTheForm()
+                .itemCostValidation()
+                .totalPriceValidation()
+                .clickPurchase();
         finalPage.detailsOfRow();
     }
 
 
     @Test
-    public void basketReading(){
-        System.setProperty("webdriver.chrome.driver", "src\\main\\resources\\chromedriver.exe");
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("start-maximized");
-        options.addArguments("disable-extensions");
-        driver = new ChromeDriver(options);
-        homePage = new HomePage(driver);
-        homePage.moveMouseToProductCategoryMenu();
+    public void shortTestForOneProduct(){
 
-        ProductCategoryMenu productCategoryMenu = new ProductCategoryMenu(driver);
+        homePage.moveMouseToProductCategoryMenu();
         productCategoryMenu.chooseRandomCategory();
-        ListOfProductsPage listOfProductsPage = new ListOfProductsPage(driver);
         listOfProductsPage.clickRandomProduct();
-        ItemDetailsPage itemDetailsPage = new ItemDetailsPage(driver);
-        itemDetailsPage.clickAddToBasket(itemDetailsPage.getRandomNumberFrom1To3());
-        itemDetailsPage.checkCorrectnessOfChosenProduct();
-        itemDetailsPage.clickBasket();
-        BasketPage basketPage = new BasketPage(driver);
-        basketPage.detailsOfRow();
-        basketPage.clickContinueButton();
-        FormPage formPage = new FormPage(driver);
-        formPage.checkShippingSameBillingCheckbox();
-        formPage.createRandomUser();
-        formPage.fillTheForm();
-        formPage.itemCostValidation();
-        formPage.totalPriceValidation();
-        formPage.clickPurchase();
-        FinalPage finalPage = new FinalPage(driver);
+        itemDetailsPage.clickAddToBasket(itemDetailsPage.getRandomNumberFrom1To3())
+                .checkCorrectnessOfChosenProduct()
+                .clickBasket();
+        basketPage.detailsOfRow()
+                .clickContinueButton();
+        formPage.checkShippingSameBillingCheckbox()
+                .createRandomUser()
+                .fillTheForm()
+                .itemCostValidation()
+                .totalPriceValidation()
+                .clickPurchase();
         finalPage.detailsOfRow();
 
     }

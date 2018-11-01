@@ -25,5 +25,4 @@ public class UserFactory {
         return RandomStringUtils.randomNumeric(9);
     }
 
-
 }

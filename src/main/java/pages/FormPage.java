@@ -18,7 +18,6 @@ public class FormPage extends WebElementManipulator{
     public FormPage(WebDriver driver){
         super(driver);
         PageFactory.initElements(driver, this);
-
     }
 
     @FindBy(css = "#shippingSameBilling")
@@ -63,7 +62,7 @@ public class FormPage extends WebElementManipulator{
     @FindBy(css = "input[title='billingemail']")
     private WebElement email;
 
-    public void fillTheForm(){
+    public FormPage fillTheForm(){
         sendKeys(email, user.getEmail());
         sendKeys(firstName, user.getFirstName());
         sendKeys(lastName, user.getLastName());
@@ -73,32 +72,40 @@ public class FormPage extends WebElementManipulator{
         country.click();
         click(poland);
         sendKeys(phone, String.valueOf(user.getPhone()));
+        return this;
     }
 
-    public void checkShippingSameBillingCheckbox(){
+    public FormPage checkShippingSameBillingCheckbox(){
         click(shippingSameBillingCheckbox);
+        return this;
     }
 
-    public void createRandomUser(){
+    public FormPage createRandomUser(){
         UserFactory userFactory = new UserFactory();
         user = userFactory.randomUser();
+        return this;
     }
 
-    public void clickPurchase(){
+    public FormPage clickPurchase(){
         click(purchase);
+        return this;
     }
 
-    public void itemCostValidation(){
+    public FormPage itemCostValidation(){
+        waitToBeVisible(itemCost);
         double itemCostDouble = Double.parseDouble(itemCost.getText().substring(1).replaceAll("[,]", ""));
         Assertions.assertEquals(BigDecimal.valueOf(itemCostDouble), BigDecimal.valueOf(BasketPage.sumOfProductsInBasket));
+        return this;
     }
 
-    public void totalPriceValidation(){
+    public FormPage totalPriceValidation(){
+        waitToBeVisible(totalPrice);
         BigDecimal itemCostBigDecimal = new BigDecimal(Double.parseDouble(itemCost.getText().substring(1).replaceAll("[,]", "")));
         shippingCostBigDecimal = new BigDecimal(Double.parseDouble(totalShipping.getText().substring(1).replaceAll("[,]", "")));
         BigDecimal sumOfShippingAndItemCost = itemCostBigDecimal.add(shippingCostBigDecimal);
         BigDecimal expectedTotal = new BigDecimal(Double.parseDouble(totalPrice.getText().substring(1).replaceAll("[,]", "")));
         Assertions.assertEquals(sumOfShippingAndItemCost, expectedTotal);
+        return this;
     }
 
 
