@@ -21,7 +21,11 @@ public class Base {
 
     @BeforeEach
     public void setUp(){
-        driver = driverFactory.getDriver();
+        try {
+            driver = driverFactory.getDriver();
+        } catch(java.net.MalformedURLException e){
+            e.printStackTrace();
+        }
         driver.get("http://store.demoqa.com/");
         driver.manage().window().maximize();
     }
