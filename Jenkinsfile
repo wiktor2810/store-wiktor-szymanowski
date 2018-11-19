@@ -3,17 +3,11 @@ pipeline {
   stages {
     stage('deploy') {
       steps {
-        sh '''stages {
-        stage(\'Build\') {
-            steps {
-                bat \'mvn -B -DskipTests clean package\'
-            }
+        sh '''node{
+        stage(\'Build\') 
+                bat "mvn clean install\'
         }
-        stage(\'Test\') { 
-            steps {
-                bat \'mvn test\' 
-            }
-}
+   
 }'''
         }
       }
