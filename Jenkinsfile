@@ -1,11 +1,6 @@
 pipeline {
   agent any
   stages {
-    stage('chromebrowser') {
-      steps {
-        sh 'echo browser=CHROME'
-      }
-    }
     stage('deploy') {
       steps {
         sh '''stages {
