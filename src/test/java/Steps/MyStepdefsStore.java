@@ -60,6 +60,7 @@ public class MyStepdefsStore {
     @Then("^validation name of chosen product$")
     public void validationNameOfChosenProduct() throws Throwable {
         itemDetailsPage.checkCorrectnessOfChosenProduct();
+        driver.quit();
     }
 }
 
