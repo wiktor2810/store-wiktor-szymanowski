@@ -13,8 +13,8 @@ import pages.ProductCategoryMenu;
 
 public class MyStepdefsStore {
 
-    WebDriver driver = null;
 
+    WebDriver driver = null;
     public MyStepdefsStore(){
         DriverFactory driverFactory = new DriverFactory();
         try {
@@ -26,31 +26,34 @@ public class MyStepdefsStore {
         driver.manage().window().maximize();
     }
 
-
-
-    HomePage homePage = new HomePage(driver);
-    ProductCategoryMenu productCategoryMenu = new ProductCategoryMenu(driver);
-    ListOfProductsPage listOfProductsPage = new ListOfProductsPage(driver);
-    ItemDetailsPage itemDetailsPage = new ItemDetailsPage(driver);
+    HomePage homePage;
+    ProductCategoryMenu productCategoryMenu;
+    ListOfProductsPage listOfProductsPage;
+    ItemDetailsPage itemDetailsPage;
 
     @Given("^user is on home page$")
     public void userIsOnHomePage() throws Throwable {
+        driver.get("http://store.demoqa.com/");
+        homePage = new HomePage(driver);
         homePage.waitForHomePageElements();
     }
 
     @When("^user go into category$")
     public void userGoIntoCategory() throws Throwable {
         homePage.moveMouseToProductCategoryMenu();
+        productCategoryMenu = new ProductCategoryMenu(driver);
         productCategoryMenu.chooseRandomCategory();
     }
 
     @And("^user choose product$")
     public void userChooseProduct() throws Throwable {
+        listOfProductsPage = new ListOfProductsPage(driver);
         listOfProductsPage.clickRandomProduct();
     }
 
     @And("^user add product to basket$")
     public void userAddProductToBasket() throws Throwable {
+        itemDetailsPage = new ItemDetailsPage(driver);
         itemDetailsPage.clickAddToBasket(1);
     }
 
