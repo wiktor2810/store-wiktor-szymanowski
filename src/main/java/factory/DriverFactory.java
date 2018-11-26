@@ -1,7 +1,10 @@
 package factory;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -25,12 +28,51 @@ public class DriverFactory  {
                 return getIEDriver();
             case EDGE:
                 return getEdgeDriver();
+            case REMOTECHROME:
+                return getRemoteChromeDriver();
+            case REMOTEFIREFOX:
+                return getRemoteFirefoxDriver();
+            case REMOTEIE:
+                return getRemoteIEDriver();
+            case REMOTEEDGE:
+                return getRemoteEdgeDriver();
         }
 
         return getChromeDriver();
     }
 
-    private WebDriver getChromeDriver()throws java.net.MalformedURLException{
+    private WebDriver getChromeDriver(){
+        System.setProperty("webdriver.chrome.driver", "src\\main\\resources\\chromedriver.exe");
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("start-maximized");
+        options.addArguments("disable-extensions");
+        return new ChromeDriver(options);
+    }
+
+    private WebDriver getFirefoxDriver(){
+        System.setProperty("webdriver.gecko.driver", "src\\main\\resources\\geckodriver.exe");
+        return new FirefoxDriver();
+    }
+
+    private WebDriver getIEDriver(){
+        DesiredCapabilities caps = DesiredCapabilities.internetExplorer();
+        caps.setCapability(InternetExplorerDriver.NATIVE_EVENTS, false);
+        caps.setCapability(InternetExplorerDriver.ENABLE_PERSISTENT_HOVERING, false);
+        caps.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, false);
+        caps.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
+        caps.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, true);
+        caps.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
+
+        System.setProperty("webdriver.ie.driver", "src\\main\\resources\\IEDriverServer.exe");
+        return new InternetExplorerDriver();
+    }
+
+    private WebDriver getEdgeDriver(){
+        System.setProperty("webdriver.edge.driver", "src\\main\\resources\\MicrosoftWebDriver.exe");
+        return new EdgeDriver();
+    }
+
+    private WebDriver getRemoteChromeDriver()throws java.net.MalformedURLException{
         System.setProperty("webdriver.chrome.driver", "src\\main\\resources\\chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
         options.addArguments("start-maximized");
@@ -39,13 +81,13 @@ public class DriverFactory  {
         return new RemoteWebDriver(new URL("http://192.168.56.1:4445/wd/hub"), cap);
     }
 
-    private WebDriver getFirefoxDriver()throws java.net.MalformedURLException{
+    private WebDriver getRemoteFirefoxDriver()throws java.net.MalformedURLException{
         System.setProperty("webdriver.gecko.driver", "src\\main\\resources\\geckodriver.exe");
         DesiredCapabilities cap = DesiredCapabilities.firefox();
         return new RemoteWebDriver(new URL("http://192.168.56.1:4445/wd/hub"), cap);
     }
 
-    private WebDriver getIEDriver()throws java.net.MalformedURLException{
+    private WebDriver getRemoteIEDriver()throws java.net.MalformedURLException{
         DesiredCapabilities caps = DesiredCapabilities.internetExplorer();
         caps.setCapability(InternetExplorerDriver.NATIVE_EVENTS, false);
         caps.setCapability(InternetExplorerDriver.ENABLE_PERSISTENT_HOVERING, false);
@@ -58,7 +100,7 @@ public class DriverFactory  {
         return new RemoteWebDriver(new URL("http://192.168.56.1:7779/wd/hub"), caps);
     }
 
-    private WebDriver getEdgeDriver()throws java.net.MalformedURLException{
+    private WebDriver getRemoteEdgeDriver()throws java.net.MalformedURLException{
         System.setProperty("webdriver.edge.driver", "src\\main\\resources\\MicrosoftWebDriver.exe");
         DesiredCapabilities cap = DesiredCapabilities.edge();
         return new RemoteWebDriver(new URL("http://192.168.56.1:7780/wd/hub"), cap);

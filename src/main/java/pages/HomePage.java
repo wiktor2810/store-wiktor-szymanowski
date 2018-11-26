@@ -28,4 +28,7 @@ public class HomePage extends WebElementManipulator{
         move(productCategoryButton);
     }
 
+    public void waitForHomePageElements(){
+        waitToBeVisible(productCategoryButton);
+    }
 }

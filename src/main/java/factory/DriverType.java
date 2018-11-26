@@ -1,5 +1,5 @@
 package factory;
 
 public enum DriverType {
-    CHROME, FIREFOX, IE, EDGE
+    CHROME, FIREFOX, IE, EDGE, REMOTECHROME, REMOTEFIREFOX, REMOTEIE, REMOTEEDGE
 }
